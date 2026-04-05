@@ -26,6 +26,20 @@ const PROMO_PATTERNS = [
 const NOISY_SYMBOLS = /[★☆♥♡※!@#$%^&*]/;
 const REDUNDANT_FAMILIES: string[][] = [MALE_TERMS, FEMALE_TERMS, CHILD_TERMS, ["단목", "중목", "장목"]];
 
+const WEIGHTS = {
+  C: 4,
+  D: 3.5,
+  X: 0.5,
+  B: 2,
+  Q: 1.5,
+  R: 2.5,
+  L: 1.5,
+  P: 3,
+  T: 4,
+  S: 1.5,
+  V: 2
+} as const;
+
 function normalize(value: string): string {
   return value.toLowerCase().replace(/\s+/g, " ").trim();
 }
@@ -37,23 +51,10 @@ function tokenize(value: string): string[] {
     .filter(Boolean);
 }
 
-function containsAnyNormalized(title: string, terms: string[]): number {
-  if (terms.length === 0) return 0;
-  const normalizedTitle = normalize(title);
-  const matches = new Set(
-    terms
-      .map((term) => normalize(term))
-      .filter((term) => term && normalizedTitle.includes(term))
-  ).size;
-
-  if (matches === 0) return 0;
-  if (matches >= Math.min(terms.length, 3)) return 1;
-  return matches >= 2 ? 0.75 : 0.5;
-}
-
 function coverageScore(title: string, terms: string[]): number {
   const uniqueTerms = [...new Set(terms.map((term) => term.trim()).filter(Boolean))];
   if (uniqueTerms.length === 0) return 0;
+
   const normalizedTitle = normalize(title);
   const matched = uniqueTerms.filter((term) => normalizedTitle.includes(normalize(term))).length;
   if (matched === 0) return 0;
@@ -98,9 +99,7 @@ function scoreSpec(title: string, input: TitleInput): number {
 
   const trimmedTitle = normalizedTitle.trim();
   if (trimmedTitle.endsWith(normalizedSpec)) return 1;
-
-  const specAtEndWithSpace = trimmedTitle.endsWith(` ${normalizedSpec}`);
-  if (specAtEndWithSpace) return 0.85;
+  if (trimmedTitle.endsWith(` ${normalizedSpec}`)) return 0.85;
 
   return 0.5;
 }
@@ -214,9 +213,10 @@ function scoreVariantOverload(title: string, input: TitleInput): number {
   const variants = [...new Set((input.variantValues ?? []).map((variant) => variant.trim()).filter(Boolean))];
   const hits = variants.filter((variant) => normalizedTitle.includes(normalize(variant))).length;
 
-  const numericVariantCount = (normalizedTitle.match(/\b\d+\s?(?:cm|mm|ml|l|kg|g|호|인치|켤레|개|장|팩|종)\b/gi) ?? []).length;
-  const overload = Math.max(hits, numericVariantCount);
+  const numericVariantCount =
+    normalizedTitle.match(/\b\d+\s?(?:cm|mm|ml|l|kg|g|인치|켤레|개|장|팩|종)\b/gi)?.length ?? 0;
 
+  const overload = Math.max(hits, numericVariantCount);
   if (overload <= 1) return 0;
   if (overload === 2) return 0.5;
   return 1;
@@ -240,17 +240,17 @@ export function scoreTitle(title: string, input: TitleInput): TitleScoreBreakdow
   const V = scoreVariantOverload(title, input);
 
   const total =
-    4 * C +
-    3 * D +
-    1 * X +
-    2 * B +
-    1.5 * Q -
-    2 * R -
-    1.5 * L -
-    3 * P -
-    4 * T -
-    1.5 * S -
-    2 * V;
+    WEIGHTS.C * C +
+    WEIGHTS.D * D +
+    WEIGHTS.X * X +
+    WEIGHTS.B * B +
+    WEIGHTS.Q * Q -
+    WEIGHTS.R * R -
+    WEIGHTS.L * L -
+    WEIGHTS.P * P -
+    WEIGHTS.T * T -
+    WEIGHTS.S * S -
+    WEIGHTS.V * V;
 
   return { C, D, X, B, Q, R, L, P, T, S, V, total: roundScore(total) };
 }

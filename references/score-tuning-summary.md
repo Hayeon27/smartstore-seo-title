@@ -24,7 +24,7 @@ The engine should penalize:
 
 $$
 \Large \mathrm{TitleScore}
-= 4C + 3D + 1X + 2B + 1.5Q - 2R - 1.5L - 3P - 4T - 1.5S - 2V
+= 4C + 3.5D + 0.5X + 2B + 1.5Q - 2.5R - 1.5L - 3P - 4T - 1.5S - 2V
 $$
 
 ## Variable Meanings
@@ -47,7 +47,7 @@ $$
 
 - `C = 4`
   because product identification is the most important baseline
-- `D = 3`
+- `D = 3.5`
   because true product distinctions often drive search and buying intent
 - `B = 2`
   because brand, line, or model matters in many categories but should not dominate all categories
@@ -56,8 +56,8 @@ $$
 
 - `Q = 1.5`
   because one representative spec is often helpful, but should not overpower the product identity
-- `X = 1`
-  because context is useful but secondary
+- `X = 0.5`
+  because context is useful but should stay secondary to product identity and differentiators
 
 ### Strong penalties
 
@@ -68,8 +68,8 @@ $$
 
 ### Moderate penalties
 
-- `R = 2`
-  because repeated synonyms and overlapping noun clusters are common marketplace failure modes
+- `R = 2.5`
+  because repeated synonyms and overlapping noun clusters are common marketplace failure modes and should be punished more clearly
 - `V = 2`
   because overloaded variants often hurt focus and readability
 

@@ -157,64 +157,54 @@ async function runSingle(inputPath: string, jsonMode: boolean): Promise<void> {
   );
 }
 
+function formatBatchOutput(
+  batch: BatchBuildResult,
+  jsonMode: boolean,
+  analysisMode: boolean,
+  outputFormat: BatchOutputFormat
+): string {
+  const { results, analysisResults, summary, metadata } = batch;
+
+  if (jsonMode) {
+    if (analysisMode) {
+      return JSON.stringify({ metadata, analysis: { summary, flagged: analysisResults } }, null, 2);
+    }
+
+    return JSON.stringify({ metadata, results }, null, 2);
+  }
+
+  if (outputFormat === "markdown") {
+    return formatBatchMarkdownReport(summary, results, metadata);
+  }
+
+  if (analysisMode) {
+    return formatBatchAnalysis(summary, analysisResults, metadata);
+  }
+
+  return formatBatchResults(results, metadata);
+}
+
 async function runBatch(
-  dirPath: string,
+  batch: BatchBuildResult,
   jsonMode: boolean,
   analysisMode: boolean,
   outputFormat: BatchOutputFormat
 ): Promise<void> {
-  const { results, analysisResults, summary, metadata } = await buildBatchResults(dirPath);
-
-  if (jsonMode) {
-    if (analysisMode) {
-      console.log(JSON.stringify({ metadata, analysis: { summary, flagged: analysisResults } }, null, 2));
-      return;
-    }
-
-    console.log(JSON.stringify({ metadata, results }, null, 2));
-    return;
-  }
-
-  if (outputFormat === "markdown") {
-    console.log(formatBatchMarkdownReport(summary, results, metadata));
-    return;
-  }
-
-  if (analysisMode) {
-    console.log(formatBatchAnalysis(summary, analysisResults, metadata));
-    return;
-  }
-
-  console.log(formatBatchResults(results, metadata));
+  console.log(formatBatchOutput(batch, jsonMode, analysisMode, outputFormat));
 }
 
 async function maybeWriteBatchOutput(
+  batch: BatchBuildResult,
   outPath: string | undefined,
   jsonMode: boolean,
   analysisMode: boolean,
-  dirPath: string,
   outputFormat: BatchOutputFormat
 ): Promise<void> {
   if (!outPath) {
     return;
   }
 
-  const { results, analysisResults, summary, metadata } = await buildBatchResults(dirPath);
-  const resolvedOutputFormat = jsonMode
-    ? "json"
-    : outputFormat === "markdown"
-      ? "markdown"
-      : "text";
-  const output =
-    resolvedOutputFormat === "json"
-      ? analysisMode
-        ? JSON.stringify({ metadata, analysis: { summary, flagged: analysisResults } }, null, 2)
-        : JSON.stringify({ metadata, results }, null, 2)
-      : resolvedOutputFormat === "markdown"
-        ? formatBatchMarkdownReport(summary, results, metadata)
-        : analysisMode
-          ? formatBatchAnalysis(summary, analysisResults, metadata)
-          : formatBatchResults(results, metadata);
+  const output = formatBatchOutput(batch, jsonMode, analysisMode, outputFormat);
   const resolvedPath = path.resolve(outPath);
 
   await mkdir(path.dirname(resolvedPath), { recursive: true });
@@ -246,8 +236,9 @@ async function main() {
     const dirPath = dirFlagIndex !== -1 && args[dirFlagIndex + 1] ? args[dirFlagIndex + 1] : "./samples";
     const outPath = outFlagIndex !== -1 && args[outFlagIndex + 1] ? args[outFlagIndex + 1] : undefined;
     const outputFormat = resolveBatchOutputFormat(formatFlag, outPath);
-    await runBatch(dirPath, jsonMode, analysisMode, outputFormat);
-    await maybeWriteBatchOutput(outPath, jsonMode, analysisMode, dirPath, outputFormat);
+    const batch = await buildBatchResults(dirPath);
+    await runBatch(batch, jsonMode, analysisMode, outputFormat);
+    await maybeWriteBatchOutput(batch, outPath, jsonMode, analysisMode, outputFormat);
     return;
   }
 

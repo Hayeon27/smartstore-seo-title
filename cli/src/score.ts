@@ -4,27 +4,31 @@ type TargetGroup = "male" | "female" | "child" | "unisex" | "unknown";
 
 const MALE_TERMS = ["남성", "남자", "남성용", "남자용", "men", "mens"];
 const FEMALE_TERMS = ["여성", "여자", "여성용", "여자용", "women", "womens"];
-const CHILD_TERMS = ["아동", "키즈", "주니어", "어린이", "학생", "kids", "kid", "junior"];
+const CHILD_TERMS = ["아동", "어린이", "주니어", "유아", "청소년", "kids", "kid", "junior"];
 const UNISEX_TERMS = ["남녀공용", "공용", "유니섹스", "unisex"];
 
 const PROMO_PATTERNS = [
   "무료배송",
   "무료 배송",
-  "특가",
   "최저가",
   "인기",
   "강추",
-  "핫딜",
-  "사은품",
+  "할인",
+  "특가",
   "쿠폰",
-  "행사",
   "이벤트",
   "1+1",
   "1 + 1"
 ];
 
-const NOISY_SYMBOLS = /[★☆♥♡※!@#$%^&*]/;
-const REDUNDANT_FAMILIES: string[][] = [MALE_TERMS, FEMALE_TERMS, CHILD_TERMS, ["단목", "중목", "장목"]];
+const NOISY_SYMBOLS = /[★☆♡♥※☞♛♚@#$%^&*]/;
+const REDUNDANT_FAMILIES: string[][] = [
+  MALE_TERMS,
+  FEMALE_TERMS,
+  CHILD_TERMS,
+  UNISEX_TERMS,
+  ["단목", "중목", "장목"]
+];
 
 const WEIGHTS = {
   C: 4,
@@ -95,11 +99,15 @@ function scoreSpec(title: string, input: TitleInput): number {
 
   const normalizedTitle = normalize(title);
   const normalizedSpec = normalize(spec);
-  if (!normalizedTitle.includes(normalizedSpec)) return 0;
+  const specIndex = normalizedTitle.indexOf(normalizedSpec);
+  if (specIndex === -1) return 0;
 
-  const trimmedTitle = normalizedTitle.trim();
-  if (trimmedTitle.endsWith(normalizedSpec)) return 1;
-  if (trimmedTitle.endsWith(` ${normalizedSpec}`)) return 0.85;
+  const specEndIndex = specIndex + normalizedSpec.length;
+  const isTerminalSpec = specEndIndex >= normalizedTitle.length;
+  if (isTerminalSpec) return 1;
+
+  const trailingText = normalizedTitle.slice(specEndIndex).trim();
+  if (trailingText.length <= 3) return 0.85;
 
   return 0.5;
 }
@@ -136,7 +144,7 @@ function scorePolicy(title: string, input: TitleInput): number {
     [...forbidden, ...PROMO_PATTERNS].filter((phrase) => normalize(phrase) && normalizedTitle.includes(normalize(phrase)))
   ).size;
 
-  const noisyPromo = NOISY_SYMBOLS.test(title) || /\b(?:무료배송|특가|최저가|인기|강추|핫딜)\b/i.test(title);
+  const noisyPromo = NOISY_SYMBOLS.test(title);
   const total = hits + (noisyPromo ? 1 : 0);
 
   if (total === 0) return 0;
@@ -200,7 +208,7 @@ function scoreStyle(title: string): number {
     /[-_]{2,}/.test(title),
     /[()[\]{}]/.test(title),
     /\s[!?.]+$/.test(title),
-    /[★☆♥♡※]/.test(title)
+    NOISY_SYMBOLS.test(title)
   ].filter(Boolean).length;
 
   if (issues === 0) return 0;
@@ -214,7 +222,7 @@ function scoreVariantOverload(title: string, input: TitleInput): number {
   const hits = variants.filter((variant) => normalizedTitle.includes(normalize(variant))).length;
 
   const numericVariantCount =
-    normalizedTitle.match(/\b\d+\s?(?:cm|mm|ml|l|kg|g|인치|켤레|개|장|팩|종)\b/gi)?.length ?? 0;
+    normalizedTitle.match(/\d+\s?(?:cm|mm|ml|l|kg|g|인치|개|종|세트|입|장)/gi)?.length ?? 0;
 
   const overload = Math.max(hits, numericVariantCount);
   if (overload <= 1) return 0;

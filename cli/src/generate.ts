@@ -1,5 +1,9 @@
 import type { TitleInput } from "./types.js";
 
+type GenerateCandidatesOptions = {
+  includeCurrentTitle?: boolean;
+};
+
 function normalizePart(part: string | undefined): string | undefined {
   const trimmed = part?.trim();
   return trimmed ? trimmed : undefined;
@@ -104,21 +108,22 @@ function buildCandidate(...parts: Array<string | undefined>): string {
   return compact(parts);
 }
 
-export function generateCandidates(input: TitleInput): string[] {
+export function generateCandidates(input: TitleInput, options: GenerateCandidatesOptions = {}): string[] {
   const { origin, primaryIdentity, secondaryIdentity, core, differentiators, contextTerms, representativeSpec } =
     pickTerms(input);
+  const includeCurrentTitle = options.includeCurrentTitle === true;
 
   const coreVariants = createCoreVariants(core);
   const coreText = coreVariants[0] ?? "";
   const alternateCoreText = coreVariants[1];
   const diffText = differentiators.join(" ");
   const ctxText = contextTerms.join(" ");
-  const currentTitle = normalizePart(input.currentTitle);
+  const currentTitle = includeCurrentTitle ? normalizePart(input.currentTitle) : undefined;
 
   const rawCandidates = [
     buildCandidate(origin, primaryIdentity, secondaryIdentity, diffText || undefined, coreText, ctxText || undefined, representativeSpec),
     buildCandidate(origin, primaryIdentity, secondaryIdentity, coreText, diffText || undefined, ctxText || undefined, representativeSpec),
-    buildCandidate(currentTitle),
+    currentTitle,
     buildCandidate(origin, primaryIdentity, diffText || undefined, coreText, ctxText || undefined, representativeSpec),
     buildCandidate(origin, primaryIdentity, coreText, diffText || undefined, ctxText || undefined, representativeSpec),
     buildCandidate(origin, primaryIdentity, coreText, diffText || undefined, representativeSpec),

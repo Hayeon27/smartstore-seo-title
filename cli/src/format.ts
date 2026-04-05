@@ -92,11 +92,24 @@ export function formatCandidates(candidates: TitleCandidate[], current?: TitleCa
   return lines.join("\n");
 }
 
-type BatchResult = {
+export type BatchComparison = "better" | "tie" | "worse" | "no-current";
+
+export type BatchResult = {
   sample: string;
   recommended: TitleCandidate;
   reason: string;
   current?: TitleCandidate;
+  comparison: BatchComparison;
+  delta?: number;
+};
+
+export type BatchAnalysisSummary = {
+  total: number;
+  compared: number;
+  better: number;
+  tie: number;
+  worse: number;
+  flagged: number;
 };
 
 export function formatBatchResults(results: BatchResult[]): string {
@@ -116,6 +129,49 @@ export function formatBatchResults(results: BatchResult[]): string {
       lines.push(`Current score: ${formatValue(result.current.breakdown.total)}`);
       lines.push(`Comparison: ${verdict}`);
     }
+
+    if (index < results.length - 1) {
+      lines.push("");
+    }
+  });
+
+  return lines.join("\n");
+}
+
+function formatComparisonLabel(result: BatchResult): string {
+  if (result.comparison === "no-current") return "no current title";
+  if (result.comparison === "better") return `better than current (${formatDelta(result.delta ?? 0)})`;
+  if (result.comparison === "tie") return "tied with current (0)";
+  return `below current (${formatDelta(result.delta ?? 0)})`;
+}
+
+export function formatBatchAnalysis(summary: BatchAnalysisSummary, results: BatchResult[]): string {
+  const lines: string[] = [];
+
+  lines.push("Analysis summary:");
+  lines.push(`- total samples: ${summary.total}`);
+  lines.push(`- compared samples: ${summary.compared}`);
+  lines.push(`- better: ${summary.better}`);
+  lines.push(`- tie: ${summary.tie}`);
+  lines.push(`- worse: ${summary.worse}`);
+  lines.push(`- flagged: ${summary.flagged}`);
+
+  if (results.length === 0) {
+    lines.push("");
+    lines.push("No tied or below-current samples found.");
+    return lines.join("\n");
+  }
+
+  lines.push("");
+  lines.push("Flagged samples:");
+
+  results.forEach((result, index) => {
+    lines.push(`${index + 1}. ${result.sample}`);
+    lines.push(`Recommended: ${result.recommended.title}`);
+    lines.push(`Score: ${formatValue(result.recommended.breakdown.total)}`);
+    lines.push(`Current: ${result.current?.title ?? "n/a"}`);
+    lines.push(`Comparison: ${formatComparisonLabel(result)}`);
+    lines.push(`Reason: ${result.reason}`);
 
     if (index < results.length - 1) {
       lines.push("");

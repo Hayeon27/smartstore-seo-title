@@ -166,6 +166,28 @@ cd cli
 npx tsx src/index.ts batch --dir ./samples --json
 ```
 
+Analysis mode:
+
+```bash
+cd cli
+npx tsx src/index.ts batch --dir ./samples --analysis
+```
+
+Analysis JSON run:
+
+```bash
+cd cli
+npx tsx src/index.ts batch --dir ./samples --analysis --json
+```
+
+Batch output saved to a file:
+
+```bash
+cd cli
+npx tsx src/index.ts batch --dir ./samples --out ./reports/batch.txt
+npx tsx src/index.ts batch --dir ./samples --json --out ./reports/batch.json
+```
+
 ## Validation Approach
 
 This project currently uses:

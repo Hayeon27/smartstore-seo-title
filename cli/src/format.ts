@@ -1,6 +1,6 @@
 import type { TitleCandidate } from "./types.js";
 
-function formatValue(value: number): string {
+export function formatValue(value: number): string {
   return Number.isInteger(value) ? `${value}` : value.toFixed(2).replace(/\.00$/, "");
 }
 
@@ -21,7 +21,7 @@ function formatBreakdown(candidate: TitleCandidate): string {
   ].join(" ");
 }
 
-function buildReason(candidate: TitleCandidate): string {
+export function buildReason(candidate: TitleCandidate): string {
   const b = candidate.breakdown;
   const reasons: string[] = [];
 
@@ -88,6 +88,39 @@ export function formatCandidates(candidates: TitleCandidate[], current?: TitleCa
   lines.push(recommended.title);
   lines.push(`Reason: ${buildReason(recommended)}`);
   lines.push(...formatCurrentComparison(recommended, current));
+
+  return lines.join("\n");
+}
+
+type BatchResult = {
+  sample: string;
+  recommended: TitleCandidate;
+  reason: string;
+  current?: TitleCandidate;
+};
+
+export function formatBatchResults(results: BatchResult[]): string {
+  const lines: string[] = [];
+
+  results.forEach((result, index) => {
+    lines.push(`${index + 1}. ${result.sample}`);
+    lines.push(`Recommended: ${result.recommended.title}`);
+    lines.push(`Score: ${formatValue(result.recommended.breakdown.total)}`);
+    lines.push(`Reason: ${result.reason}`);
+
+    if (result.current) {
+      const delta = result.recommended.breakdown.total - result.current.breakdown.total;
+      const verdict =
+        delta > 0 ? `beats current (${formatValue(delta)})` : delta < 0 ? `below current (${formatValue(delta)})` : "ties current (0)";
+
+      lines.push(`Current score: ${formatValue(result.current.breakdown.total)}`);
+      lines.push(`Comparison: ${verdict}`);
+    }
+
+    if (index < results.length - 1) {
+      lines.push("");
+    }
+  });
 
   return lines.join("\n");
 }

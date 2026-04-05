@@ -1,6 +1,7 @@
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
+import path from "node:path";
 import { generateCandidates } from "./generate.js";
-import { formatCandidates } from "./format.js";
+import { buildReason, formatBatchResults, formatCandidates } from "./format.js";
 import { scoreTitle } from "./score.js";
 import type { TitleCandidate, TitleInput } from "./types.js";
 
@@ -9,46 +10,11 @@ async function loadInput(path: string): Promise<TitleInput> {
   return JSON.parse(raw) as TitleInput;
 }
 
-function buildReason(candidate: TitleCandidate): string {
-  const b = candidate.breakdown;
-  const reasons: string[] = [];
-
-  if (b.C >= 0.75) reasons.push("strong core relevance");
-  if (b.D >= 0.75) reasons.push("clear differentiator");
-  if (b.B >= 0.75) reasons.push("strong brand/model signal");
-  if (b.Q >= 0.75) reasons.push("clean spec placement");
-  if (b.X >= 0.75) reasons.push("good context coverage");
-
-  const lowNoise =
-    b.R <= 0.5 &&
-    b.L <= 0.5 &&
-    b.P <= 0.5 &&
-    b.T <= 0.5 &&
-    b.S <= 0.5 &&
-    b.V <= 0.5;
-
-  if (lowNoise) {
-    reasons.push("low noise");
-  }
-
-  if (reasons.length === 0) {
-    return "best overall score after penalties";
-  }
-
-  return reasons.slice(0, 3).join(", ");
-}
-
-async function main() {
-  const args = process.argv.slice(2);
-  const inputFlagIndex = args.indexOf("--input");
-  const jsonMode = args.includes("--json");
-
-  if (args[0] !== "run" || inputFlagIndex === -1 || !args[inputFlagIndex + 1]) {
-    console.error("Usage: tsx src/index.ts run --input ./samples/file.json [--json]");
-    process.exit(1);
-  }
-
-  const input = await loadInput(args[inputFlagIndex + 1]);
+function rankCandidates(input: TitleInput): {
+  candidates: TitleCandidate[];
+  recommended: TitleCandidate;
+  currentCandidate?: TitleCandidate;
+} {
   const titles = generateCandidates(input);
   const candidates: TitleCandidate[] = titles.map((title) => ({
     title,
@@ -60,8 +26,14 @@ async function main() {
         breakdown: scoreTitle(input.currentTitle, input)
       }
     : undefined;
-
   const recommended = [...candidates].sort((a, b) => b.breakdown.total - a.breakdown.total)[0];
+
+  return { candidates, recommended, currentCandidate };
+}
+
+async function runSingle(inputPath: string, jsonMode: boolean): Promise<void> {
+  const input = await loadInput(inputPath);
+  const { candidates, recommended, currentCandidate } = rankCandidates(input);
 
   if (jsonMode) {
     const output = {
@@ -79,6 +51,61 @@ async function main() {
   }
 
   console.log(formatCandidates(candidates, currentCandidate));
+}
+
+async function runBatch(dirPath: string, jsonMode: boolean): Promise<void> {
+  const fileNames = (await readdir(dirPath))
+    .filter((name) => name.endsWith(".json"))
+    .sort((a, b) => a.localeCompare(b));
+
+  const results = [];
+
+  for (const fileName of fileNames) {
+    const input = await loadInput(path.join(dirPath, fileName));
+    const { recommended, currentCandidate } = rankCandidates(input);
+
+    results.push({
+      sample: fileName,
+      recommended,
+      reason: buildReason(recommended),
+      current: currentCandidate
+    });
+  }
+
+  if (jsonMode) {
+    console.log(JSON.stringify({ results }, null, 2));
+    return;
+  }
+
+  console.log(formatBatchResults(results));
+}
+
+async function main() {
+  const args = process.argv.slice(2);
+  const inputFlagIndex = args.indexOf("--input");
+  const dirFlagIndex = args.indexOf("--dir");
+  const jsonMode = args.includes("--json");
+
+  if (args[0] === "run") {
+    if (inputFlagIndex === -1 || !args[inputFlagIndex + 1]) {
+      console.error("Usage: tsx src/index.ts run --input ./samples/file.json [--json]");
+      process.exit(1);
+    }
+
+    await runSingle(args[inputFlagIndex + 1], jsonMode);
+    return;
+  }
+
+  if (args[0] === "batch") {
+    const dirPath = dirFlagIndex !== -1 && args[dirFlagIndex + 1] ? args[dirFlagIndex + 1] : "./samples";
+    await runBatch(dirPath, jsonMode);
+    return;
+  }
+
+  console.error("Usage:");
+  console.error("  tsx src/index.ts run --input ./samples/file.json [--json]");
+  console.error("  tsx src/index.ts batch [--dir ./samples] [--json]");
+  process.exit(1);
 }
 
 void main();

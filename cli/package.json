@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx src/index.ts run --input ./samples/socks.json",
+    "batch": "tsx src/index.ts batch --dir ./samples",
     "build": "tsc -p tsconfig.json",
     "start": "node dist/index.js"
   },

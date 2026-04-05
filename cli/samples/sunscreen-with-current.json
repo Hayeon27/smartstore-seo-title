@@ -1,0 +1,15 @@
+{
+  "productType": "선크림",
+  "origin": "",
+  "brand": "닥터지",
+  "manufacturer": "",
+  "modelName": "",
+  "currentTitle": "닥터지 그린 마일드 업 선크림 저자극 SPF50+ PA++++ 50ml",
+  "coreTerms": ["선크림", "저자극", "SPF50+", "PA++++"],
+  "differentiators": ["그린 마일드 업"],
+  "contextTerms": ["데일리"],
+  "representativeSpec": "50ml",
+  "targetCustomer": "",
+  "forbiddenPhrases": ["무료배송", "행사", "쿠폰"],
+  "variantValues": ["35ml", "50ml", "70ml"]
+}

@@ -132,6 +132,7 @@ npm run dev
 Current default sample:
 
 - `cli/samples/air-fryer-paper-liner-with-current.json`
+- `cli/samples/air-purifier-filter-with-current.json`
 - `cli/samples/bedding-with-current.json`
 - `cli/samples/bedding-pad-with-current.json`
 - `cli/samples/cutting-board-with-current.json`
@@ -141,6 +142,7 @@ Current default sample:
 - `cli/samples/foam-cleanser-with-current.json`
 - `cli/samples/frying-pan-with-current.json`
 - `cli/samples/frying-pot-with-current.json`
+- `cli/samples/hand-cream-with-current.json`
 - `cli/samples/hanger-set-with-current.json`
 - `cli/samples/humidifier-with-current.json`
 - `cli/samples/kitchen-towel-with-current.json`
@@ -153,13 +155,19 @@ Current default sample:
 - `cli/samples/pillow-with-current.json`
 - `cli/samples/phone-strap-with-current.json`
 - `cli/samples/rice-cooker-with-current.json`
+- `cli/samples/power-strip-with-current.json`
 - `cli/samples/shower-head-with-current.json`
+- `cli/samples/slippers-with-current.json`
 - `cli/samples/sneakers-with-current.json`
 - `cli/samples/socks-with-current.json`
 - `cli/samples/storage-box-with-current.json`
+- `cli/samples/sunscreen-with-current.json`
+- `cli/samples/trash-can-with-current.json`
 - `cli/samples/tumbler-with-current.json`
 - `cli/samples/vacuum-tumbler-with-current.json`
 - `cli/samples/water-bottle-with-current.json`
+- `cli/samples/wireless-keyboard-with-current.json`
+- `cli/samples/yoga-mat-with-current.json`
 
 The long-term plan is to replace manual sample input with normalized data derived from Smartstore channel-product reads.
 

@@ -188,6 +188,15 @@ The current workflow is:
    - best market title
 6. Tune only when mismatch patterns repeat
 
+## References
+
+This project is inspired by practical learning-to-rank and e-commerce search literature, especially:
+
+- Wu et al., [A Multi-task Learning Framework for Product Ranking with BERT](https://arxiv.org/abs/2202.05317)
+- Liu et al., [Towards More Relevant Product Search Ranking Via Large Language Models: An Empirical Study](https://arxiv.org/abs/2409.17460)
+- Xu et al., [Optimizing E-commerce Search: Toward a Generalizable and Rank-Consistent Pre-Ranking Model](https://arxiv.org/abs/2405.05606)
+- Pasumarthi et al., [TF-Ranking: Scalable TensorFlow Library for Learning-to-Rank](https://arxiv.org/abs/1812.00073)
+
 ## Current Status
 
 The scoring engine is at a practical `v1 frozen` stage.
@@ -205,3 +214,7 @@ This is best understood as:
 - a general Smartstore-style title scoring engine
 - a reusable commerce title recommendation skill
 - a base layer that could later power a CLI or app
+
+## License
+
+This project is licensed under the MIT License. See [LICENSE](./LICENSE).

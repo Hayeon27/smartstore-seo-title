@@ -159,6 +159,14 @@ Current default sample:
 
 The long-term plan is to replace manual sample input with normalized data derived from Smartstore channel-product reads.
 
+## UTF-8 Notes
+
+Korean sample data should always be saved as UTF-8.
+
+- JSON sample files are expected to be UTF-8.
+- The CLI reads input files as UTF-8.
+- If Korean output looks garbled in Windows, use a UTF-8-friendly terminal or switch the console code page to UTF-8 before running the CLI.
+
 Example comparison run:
 
 ```bash

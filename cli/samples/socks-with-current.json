@@ -1,0 +1,15 @@
+{
+  "productType": "ankle socks",
+  "origin": "국산",
+  "brand": "키키",
+  "manufacturer": "",
+  "modelName": "",
+  "currentTitle": "국산 남자 여자 학생 단목 무지 양말 10켤레",
+  "coreTerms": ["남성", "단목", "양말"],
+  "differentiators": [],
+  "contextTerms": ["데일리"],
+  "representativeSpec": "10켤레",
+  "targetCustomer": "남성",
+  "forbiddenPhrases": ["무료배송", "특가", "인기"],
+  "variantValues": ["남성", "여성", "학생", "단목", "중목", "장목"]
+}

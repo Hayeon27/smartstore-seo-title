@@ -116,8 +116,23 @@ npm run dev
 Current default sample:
 
 - `cli/samples/socks.json`
+- `cli/samples/socks-with-current.json`
 
 The long-term plan is to replace manual sample input with normalized data derived from Smartstore channel-product reads.
+
+Example comparison run:
+
+```bash
+cd cli
+npx tsx src/index.ts run --input ./samples/socks-with-current.json
+```
+
+Example JSON run:
+
+```bash
+cd cli
+npx tsx src/index.ts run --input ./samples/socks-with-current.json --json
+```
 
 ## Validation Approach
 

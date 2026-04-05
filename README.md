@@ -1,6 +1,6 @@
-# Smartstore SEO Title Engine
+# Smartstore SEO Title CLI
 
-Smartstore-style product title scoring and recommendation engine.
+Smartstore-style product title scoring and recommendation CLI.
 
 This repository contains a reusable CLI prototype and evaluation docs for generating Korean commerce product titles that prioritize:
 
@@ -10,13 +10,13 @@ This repository contains a reusable CLI prototype and evaluation docs for genera
 - one representative size, quantity, or capacity
 - natural Korean commerce phrasing
 
-It is designed as a category-agnostic title engine, not a category-specific title generator.
+It is designed as a category-agnostic title CLI, not a category-specific title generator.
 
 The repository includes a minimal TypeScript CLI prototype for local candidate generation and scoring.
 
 ## What This Project Does
 
-The engine takes product facts, generates a small set of title candidates, scores them with a shared heuristic, and recommends the best title.
+The CLI takes product facts, generates a small set of title candidates, scores them with a shared heuristic, and recommends the best title.
 
 The current design goal is:
 

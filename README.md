@@ -2,7 +2,7 @@
 
 Smartstore-style product title scoring and recommendation engine.
 
-This repository contains a reusable skill and evaluation docs for generating Korean commerce product titles that prioritize:
+This repository contains a reusable CLI prototype and evaluation docs for generating Korean commerce product titles that prioritize:
 
 - clear product identification
 - meaningful differentiators
@@ -12,7 +12,7 @@ This repository contains a reusable skill and evaluation docs for generating Kor
 
 It is designed as a category-agnostic title engine, not a category-specific title generator.
 
-The repository now also includes a minimal TypeScript CLI prototype for local candidate generation and scoring.
+The repository includes a minimal TypeScript CLI prototype for local candidate generation and scoring.
 
 ## What This Project Does
 
@@ -68,9 +68,7 @@ The engine should penalize:
 ```text
 smartstore-seo-title/
   README.md
-  SKILL.md
-  agents/
-    openai.yaml
+  LICENSE
   cli/
     package.json
     tsconfig.json
@@ -84,10 +82,6 @@ smartstore-seo-title/
 
 ## Files
 
-- `SKILL.md`
-  Main skill definition for title generation, scoring, and recommendation
-- `agents/openai.yaml`
-  UI-facing metadata for the skill
 - `cli/`
   Minimal TypeScript CLI prototype for local generation and scoring
 - `references/title-evaluation-template.md`
@@ -124,7 +118,6 @@ Current default sample:
 - `cli/samples/phone-strap-with-current.json`
 - `cli/samples/shower-head-with-current.json`
 - `cli/samples/sneakers-with-current.json`
-- `cli/samples/socks.json`
 - `cli/samples/socks-with-current.json`
 - `cli/samples/storage-box-with-current.json`
 - `cli/samples/tumbler-with-current.json`
@@ -212,7 +205,6 @@ That means:
 This is best understood as:
 
 - a general Smartstore-style title scoring engine
-- a reusable commerce title recommendation skill
 - a base layer that could later power a CLI or app
 
 ## License

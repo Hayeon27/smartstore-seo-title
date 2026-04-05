@@ -1,7 +1,0 @@
-interface:
-  display_name: "Smartstore SEO Title"
-  short_description: "Generate Smartstore-compliant product titles with relevance-focused SEO rules."
-  default_prompt: "Use $smartstore-seo-title to generate Smartstore-compliant product title candidates from product details."
-
-policy:
-  allow_implicit_invocation: true

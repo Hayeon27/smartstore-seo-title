@@ -198,7 +198,10 @@ Batch output saved to a file:
 cd cli
 npx tsx src/index.ts batch --dir ./samples --out ./reports/batch.txt
 npx tsx src/index.ts batch --dir ./samples --json --out ./reports/batch.json
+npx tsx src/index.ts batch --dir ./samples --format md --out ./reports/batch.md
 ```
+
+If the output file ends with `.md`, the CLI writes a markdown report automatically.
 
 ## Validation Approach
 

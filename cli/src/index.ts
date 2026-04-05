@@ -4,6 +4,7 @@ import { generateCandidates } from "./generate.js";
 import {
   buildReason,
   formatBatchAnalysis,
+  formatBatchMarkdownReport,
   formatBatchResults,
   formatCandidates,
   type BatchAnalysisSummary,
@@ -67,6 +68,16 @@ type BatchBuildResult = {
   summary: BatchAnalysisSummary;
 };
 
+type BatchOutputFormat = "text" | "json" | "markdown";
+
+function resolveBatchOutputFormat(formatFlag: string | undefined, outPath?: string): BatchOutputFormat {
+  const normalizedFormat = formatFlag?.toLowerCase();
+  if (normalizedFormat === "json") return "json";
+  if (normalizedFormat === "md" || normalizedFormat === "markdown") return "markdown";
+  if (outPath?.toLowerCase().endsWith(".md")) return "markdown";
+  return "text";
+}
+
 async function buildBatchResults(dirPath: string): Promise<BatchBuildResult> {
   const fileNames = (await readdir(dirPath))
     .filter((name) => name.endsWith(".json"))
@@ -125,7 +136,12 @@ async function buildBatchResults(dirPath: string): Promise<BatchBuildResult> {
   return { results, analysisResults, summary };
 }
 
-async function runBatch(dirPath: string, jsonMode: boolean, analysisMode: boolean): Promise<void> {
+async function runBatch(
+  dirPath: string,
+  jsonMode: boolean,
+  analysisMode: boolean,
+  outputFormat: BatchOutputFormat
+): Promise<void> {
   const { results, analysisResults, summary } = await buildBatchResults(dirPath);
 
   if (jsonMode) {
@@ -135,6 +151,11 @@ async function runBatch(dirPath: string, jsonMode: boolean, analysisMode: boolea
     }
 
     console.log(JSON.stringify({ results }, null, 2));
+    return;
+  }
+
+  if (outputFormat === "markdown") {
+    console.log(formatBatchMarkdownReport(summary, results));
     return;
   }
 
@@ -150,18 +171,26 @@ async function maybeWriteBatchOutput(
   outPath: string | undefined,
   jsonMode: boolean,
   analysisMode: boolean,
-  dirPath: string
+  dirPath: string,
+  outputFormat: BatchOutputFormat
 ): Promise<void> {
   if (!outPath) {
     return;
   }
 
   const { results, analysisResults, summary } = await buildBatchResults(dirPath);
-  const output = jsonMode
+  const resolvedOutputFormat = jsonMode
+    ? "json"
+    : outputFormat === "markdown"
+      ? "markdown"
+      : "text";
+  const output = resolvedOutputFormat === "json"
     ? analysisMode
       ? JSON.stringify({ analysis: { summary, flagged: analysisResults } }, null, 2)
       : JSON.stringify({ results }, null, 2)
-    : analysisMode
+    : resolvedOutputFormat === "markdown"
+      ? formatBatchMarkdownReport(summary, results)
+      : analysisMode
       ? formatBatchAnalysis(summary, analysisResults)
       : formatBatchResults(results);
   const resolvedPath = path.resolve(outPath);
@@ -176,8 +205,10 @@ async function main() {
   const inputFlagIndex = args.indexOf("--input");
   const dirFlagIndex = args.indexOf("--dir");
   const outFlagIndex = args.indexOf("--out");
+  const formatFlagIndex = args.indexOf("--format");
   const jsonMode = args.includes("--json");
   const analysisMode = args.includes("--analysis");
+  const formatFlag = formatFlagIndex !== -1 && args[formatFlagIndex + 1] ? args[formatFlagIndex + 1] : undefined;
 
   if (args[0] === "run") {
     if (inputFlagIndex === -1 || !args[inputFlagIndex + 1]) {
@@ -192,14 +223,15 @@ async function main() {
   if (args[0] === "batch") {
     const dirPath = dirFlagIndex !== -1 && args[dirFlagIndex + 1] ? args[dirFlagIndex + 1] : "./samples";
     const outPath = outFlagIndex !== -1 && args[outFlagIndex + 1] ? args[outFlagIndex + 1] : undefined;
-    await runBatch(dirPath, jsonMode, analysisMode);
-    await maybeWriteBatchOutput(outPath, jsonMode, analysisMode, dirPath);
+    const outputFormat = resolveBatchOutputFormat(formatFlag, outPath);
+    await runBatch(dirPath, jsonMode, analysisMode, outputFormat);
+    await maybeWriteBatchOutput(outPath, jsonMode, analysisMode, dirPath, outputFormat);
     return;
   }
 
   console.error("Usage:");
   console.error("  tsx src/index.ts run --input ./samples/file.json [--json]");
-  console.error("  tsx src/index.ts batch [--dir ./samples] [--json] [--analysis] [--out ./reports/batch.txt]");
+  console.error("  tsx src/index.ts batch [--dir ./samples] [--json] [--analysis] [--format md] [--out ./reports/batch.txt]");
   process.exit(1);
 }
 

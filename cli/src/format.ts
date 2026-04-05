@@ -112,6 +112,24 @@ export type BatchAnalysisSummary = {
   flagged: number;
 };
 
+function escapeMarkdownCell(value: string): string {
+  return value.replace(/\|/g, "\\|").replace(/\n/g, " ");
+}
+
+function formatMarkdownComparisonLabel(result: BatchResult): string {
+  if (result.comparison === "no-current") return "n/a";
+  if (result.comparison === "better") return `better (${formatDelta(result.delta ?? 0)})`;
+  if (result.comparison === "tie") return "tie (0)";
+  return `worse (${formatDelta(result.delta ?? 0)})`;
+}
+
+function formatComparisonLabel(result: BatchResult): string {
+  if (result.comparison === "no-current") return "no current title";
+  if (result.comparison === "better") return `better than current (${formatDelta(result.delta ?? 0)})`;
+  if (result.comparison === "tie") return "tied with current (0)";
+  return `below current (${formatDelta(result.delta ?? 0)})`;
+}
+
 export function formatBatchResults(results: BatchResult[]): string {
   const lines: string[] = [];
 
@@ -136,13 +154,6 @@ export function formatBatchResults(results: BatchResult[]): string {
   });
 
   return lines.join("\n");
-}
-
-function formatComparisonLabel(result: BatchResult): string {
-  if (result.comparison === "no-current") return "no current title";
-  if (result.comparison === "better") return `better than current (${formatDelta(result.delta ?? 0)})`;
-  if (result.comparison === "tie") return "tied with current (0)";
-  return `below current (${formatDelta(result.delta ?? 0)})`;
 }
 
 export function formatBatchAnalysis(summary: BatchAnalysisSummary, results: BatchResult[]): string {
@@ -176,6 +187,33 @@ export function formatBatchAnalysis(summary: BatchAnalysisSummary, results: Batc
     if (index < results.length - 1) {
       lines.push("");
     }
+  });
+
+  return lines.join("\n");
+}
+
+export function formatBatchMarkdownReport(summary: BatchAnalysisSummary, results: BatchResult[]): string {
+  const lines: string[] = [];
+
+  lines.push("# Batch Report");
+  lines.push("");
+  lines.push("## Summary");
+  lines.push("");
+  lines.push(`- total samples: ${summary.total}`);
+  lines.push(`- compared samples: ${summary.compared}`);
+  lines.push(`- better: ${summary.better}`);
+  lines.push(`- tie: ${summary.tie}`);
+  lines.push(`- worse: ${summary.worse}`);
+  lines.push("");
+  lines.push("## Results");
+  lines.push("");
+  lines.push("| Sample | Recommended | Score | Current Score | Comparison | Reason |");
+  lines.push("| --- | --- | ---: | ---: | --- | --- |");
+
+  results.forEach((result) => {
+    lines.push(
+      `| ${escapeMarkdownCell(result.sample)} | ${escapeMarkdownCell(result.recommended.title)} | ${formatValue(result.recommended.breakdown.total)} | ${result.current ? formatValue(result.current.breakdown.total) : "n/a"} | ${escapeMarkdownCell(formatMarkdownComparisonLabel(result))} | ${escapeMarkdownCell(result.reason)} |`
+    );
   });
 
   return lines.join("\n");

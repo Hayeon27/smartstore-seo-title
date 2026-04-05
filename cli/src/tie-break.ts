@@ -110,6 +110,14 @@ function structureTieBreakScore(input: TitleInput, title: string): number {
     score -= 0.5;
   }
 
+  if (coreIndex !== -1 && differentiatorIndex !== -1) {
+    if (differentiatorIndex < coreIndex) {
+      score += 1;
+    } else if (coreIndex < differentiatorIndex) {
+      score -= 0.5;
+    }
+  }
+
   if (specIndex !== -1 && specIndex >= title.length - (representativeSpec?.length ?? 0) - 2) {
     score += 0.75;
   }

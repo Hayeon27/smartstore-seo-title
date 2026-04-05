@@ -224,6 +224,8 @@ cd cli
 npx tsx src/index.ts batch --dir ./samples --out ./reports/batch.txt
 npx tsx src/index.ts batch --dir ./samples --json --out ./reports/batch.json
 npx tsx src/index.ts batch --dir ./samples --format md --out ./reports/batch.md
+
+The markdown report includes metadata, overall summary, full results, and a dedicated `Flagged` section for tied or below-current samples.
 ```
 
 If the output file ends with `.md`, the CLI writes a markdown report automatically.

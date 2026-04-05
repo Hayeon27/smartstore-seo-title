@@ -136,6 +136,12 @@ export type BatchAnalysisSummary = {
   flagged: number;
 };
 
+export type BatchReportMetadata = {
+  sourceDir: string;
+  sampleCount: number;
+  sampleNames: string[];
+};
+
 function escapeMarkdownCell(value: string): string {
   return value.replace(/\|/g, "\\|").replace(/\n/g, " ");
 }
@@ -154,8 +160,14 @@ function formatComparisonLabel(result: BatchResult): string {
   return result.tieBreakResolved ? "below current (tie-break)" : `below current (${formatDelta(result.delta ?? 0)})`;
 }
 
-export function formatBatchResults(results: BatchResult[]): string {
+export function formatBatchResults(results: BatchResult[], metadata: BatchReportMetadata): string {
   const lines: string[] = [];
+
+  lines.push("Batch metadata:");
+  lines.push(`- source dir: ${metadata.sourceDir}`);
+  lines.push(`- sample count: ${metadata.sampleCount}`);
+  lines.push(`- samples: ${metadata.sampleNames.join(", ")}`);
+  lines.push("");
 
   results.forEach((result, index) => {
     lines.push(`${index + 1}. ${result.sample}`);
@@ -188,8 +200,19 @@ export function formatBatchResults(results: BatchResult[]): string {
   return lines.join("\n");
 }
 
-export function formatBatchAnalysis(summary: BatchAnalysisSummary, results: BatchResult[]): string {
+export function formatBatchAnalysis(
+  summary: BatchAnalysisSummary,
+  results: BatchResult[],
+  metadata: BatchReportMetadata
+): string {
   const lines: string[] = [];
+
+  lines.push("Batch metadata:");
+  lines.push(`- source dir: ${metadata.sourceDir}`);
+  lines.push(`- sample count: ${metadata.sampleCount}`);
+  lines.push(`- compared samples: ${summary.compared}`);
+  lines.push(`- flagged samples: ${summary.flagged}`);
+  lines.push("");
 
   lines.push("Analysis summary:");
   lines.push(`- total samples: ${summary.total}`);
@@ -224,10 +247,21 @@ export function formatBatchAnalysis(summary: BatchAnalysisSummary, results: Batc
   return lines.join("\n");
 }
 
-export function formatBatchMarkdownReport(summary: BatchAnalysisSummary, results: BatchResult[]): string {
+export function formatBatchMarkdownReport(
+  summary: BatchAnalysisSummary,
+  results: BatchResult[],
+  metadata: BatchReportMetadata
+): string {
   const lines: string[] = [];
+  const flagged = results.filter((result) => result.comparison === "tie" || result.comparison === "worse");
 
   lines.push("# Batch Report");
+  lines.push("");
+  lines.push("## Metadata");
+  lines.push("");
+  lines.push(`- source dir: ${metadata.sourceDir}`);
+  lines.push(`- sample count: ${metadata.sampleCount}`);
+  lines.push(`- sample names: ${metadata.sampleNames.join(", ")}`);
   lines.push("");
   lines.push("## Summary");
   lines.push("");
@@ -236,6 +270,7 @@ export function formatBatchMarkdownReport(summary: BatchAnalysisSummary, results
   lines.push(`- better: ${summary.better}`);
   lines.push(`- tie: ${summary.tie}`);
   lines.push(`- worse: ${summary.worse}`);
+  lines.push(`- better rate: ${summary.compared > 0 ? formatValue((summary.better / summary.compared) * 100) : "0"}%`);
   lines.push("");
   lines.push("## Results");
   lines.push("");
@@ -247,6 +282,20 @@ export function formatBatchMarkdownReport(summary: BatchAnalysisSummary, results
       `| ${escapeMarkdownCell(result.sample)} | ${escapeMarkdownCell(result.recommended.title)} | ${formatValue(result.recommended.breakdown.total)} | ${result.current ? formatValue(result.current.breakdown.total) : "n/a"} | ${escapeMarkdownCell(formatMarkdownComparisonLabel(result))} | ${escapeMarkdownCell(result.reason)} |`
     );
   });
+
+  if (flagged.length > 0) {
+    lines.push("");
+    lines.push("## Flagged");
+    lines.push("");
+    lines.push("| Sample | Comparison | Recommended | Current |");
+    lines.push("| --- | --- | --- | --- |");
+
+    flagged.forEach((result) => {
+      lines.push(
+        `| ${escapeMarkdownCell(result.sample)} | ${escapeMarkdownCell(formatMarkdownComparisonLabel(result))} | ${escapeMarkdownCell(result.recommended.title)} | ${escapeMarkdownCell(result.current?.title ?? "n/a")} |`
+      );
+    });
+  }
 
   return lines.join("\n");
 }

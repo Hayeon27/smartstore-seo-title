@@ -44,6 +44,24 @@ function compactList(parts: Array<string | undefined>): string[] {
     });
 }
 
+function createCoreVariants(coreTerms: string[]): string[] {
+  const variants = new Set<string>();
+  const base = compact(coreTerms);
+
+  if (base) {
+    variants.add(base);
+  }
+
+  if (coreTerms.length === 2) {
+    const reversed = compact([coreTerms[1], coreTerms[0]]);
+    if (reversed) {
+      variants.add(reversed);
+    }
+  }
+
+  return Array.from(variants);
+}
+
 function overlapsWithIdentity(term: string, identityTerms: string[]): boolean {
   const key = canonical(term);
   return identityTerms.some((identity) => {
@@ -90,22 +108,39 @@ export function generateCandidates(input: TitleInput): string[] {
   const { origin, primaryIdentity, secondaryIdentity, core, differentiators, contextTerms, representativeSpec } =
     pickTerms(input);
 
-  const coreText = core.join(" ");
+  const coreVariants = createCoreVariants(core);
+  const coreText = coreVariants[0] ?? "";
+  const alternateCoreText = coreVariants[1];
   const diffText = differentiators.join(" ");
   const ctxText = contextTerms.join(" ");
+  const currentTitle = normalizePart(input.currentTitle);
 
   const rawCandidates = [
-    buildCandidate(origin, primaryIdentity, secondaryIdentity, coreText, diffText || undefined, representativeSpec),
+    buildCandidate(origin, primaryIdentity, secondaryIdentity, diffText || undefined, coreText, ctxText || undefined, representativeSpec),
     buildCandidate(origin, primaryIdentity, secondaryIdentity, coreText, diffText || undefined, ctxText || undefined, representativeSpec),
-    buildCandidate(origin, primaryIdentity, coreText, secondaryIdentity, diffText || undefined, ctxText || undefined, representativeSpec),
+    buildCandidate(currentTitle),
+    buildCandidate(origin, primaryIdentity, diffText || undefined, coreText, ctxText || undefined, representativeSpec),
     buildCandidate(origin, primaryIdentity, coreText, diffText || undefined, ctxText || undefined, representativeSpec),
-    buildCandidate(primaryIdentity, coreText, diffText || undefined, representativeSpec),
+    buildCandidate(origin, primaryIdentity, coreText, diffText || undefined, representativeSpec),
     buildCandidate(primaryIdentity, diffText || undefined, coreText, representativeSpec),
+    buildCandidate(primaryIdentity, coreText, diffText || undefined, representativeSpec),
+    buildCandidate(primaryIdentity, coreText, ctxText || undefined, representativeSpec),
     buildCandidate(coreText, diffText || undefined, primaryIdentity, representativeSpec),
-    buildCandidate(origin, coreText, diffText || undefined, primaryIdentity, ctxText || undefined, representativeSpec)
+    buildCandidate(origin, coreText, diffText || undefined, primaryIdentity, ctxText || undefined, representativeSpec),
+    alternateCoreText
+      ? buildCandidate(origin, primaryIdentity, secondaryIdentity, alternateCoreText, diffText || undefined, ctxText || undefined, representativeSpec)
+      : undefined,
+    alternateCoreText
+      ? buildCandidate(origin, primaryIdentity, alternateCoreText, diffText || undefined, representativeSpec)
+      : undefined,
+    alternateCoreText
+      ? buildCandidate(primaryIdentity, alternateCoreText, diffText || undefined, representativeSpec)
+      : undefined
   ];
 
-  const uniqueCandidates = Array.from(new Set(rawCandidates.filter(Boolean)));
+  const uniqueCandidates = Array.from(
+    new Set(rawCandidates.filter((candidate): candidate is string => Boolean(candidate)))
+  );
 
   if (uniqueCandidates.length >= 3) {
     return uniqueCandidates.slice(0, 3);

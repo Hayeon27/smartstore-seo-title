@@ -66,6 +66,30 @@ function createCoreVariants(coreTerms: string[]): string[] {
   return Array.from(variants);
 }
 
+function prefersAlternateCoreOrder(
+  currentTitle: string | undefined,
+  canonicalCore: string | undefined,
+  alternateCore: string | undefined
+): boolean {
+  const normalizedCurrent = normalizePart(currentTitle);
+  const normalizedCanonical = normalizePart(canonicalCore);
+  const normalizedAlternate = normalizePart(alternateCore);
+
+  if (!normalizedCurrent || !normalizedCanonical || !normalizedAlternate) {
+    return false;
+  }
+
+  const current = canonical(normalizedCurrent);
+  const canonicalIndex = current.indexOf(canonical(normalizedCanonical));
+  const alternateIndex = current.indexOf(canonical(normalizedAlternate));
+
+  return alternateIndex !== -1 && canonicalIndex !== -1 && alternateIndex < canonicalIndex;
+}
+
+function pickLeadingModifier(coreTerms: string[]): string | undefined {
+  return coreTerms.find((term) => /^[A-Z0-9]{2,6}$/.test(term));
+}
+
 function overlapsWithIdentity(term: string, identityTerms: string[]): boolean {
   const key = canonical(term);
   return identityTerms.some((identity) => {
@@ -116,15 +140,24 @@ export function generateCandidates(input: TitleInput, options: GenerateCandidate
   const coreVariants = createCoreVariants(core);
   const coreText = coreVariants[0] ?? "";
   const alternateCoreText = coreVariants[1];
+  const leadingModifier = pickLeadingModifier(core);
+  const leadingModifierVariant = leadingModifier
+    ? compact([leadingModifier, ...core.filter((term) => term !== leadingModifier)])
+    : undefined;
   const diffText = differentiators.join(" ");
   const ctxText = contextTerms.join(" ");
-  const currentTitle = includeCurrentTitle ? normalizePart(input.currentTitle) : undefined;
+  const currentLikeCandidate =
+    prefersAlternateCoreOrder(input.currentTitle, coreText, alternateCoreText) && alternateCoreText
+      ? buildCandidate(origin, primaryIdentity, alternateCoreText, diffText || undefined, representativeSpec)
+      : undefined;
 
   const rawCandidates = [
-    buildCandidate(origin, primaryIdentity, secondaryIdentity, diffText || undefined, coreText, ctxText || undefined, representativeSpec),
+    buildCandidate(origin, primaryIdentity, secondaryIdentity, diffText || undefined, coreText, representativeSpec),
     buildCandidate(origin, primaryIdentity, secondaryIdentity, coreText, diffText || undefined, ctxText || undefined, representativeSpec),
-    currentTitle,
-    buildCandidate(origin, primaryIdentity, diffText || undefined, coreText, ctxText || undefined, representativeSpec),
+    currentLikeCandidate ?? buildCandidate(origin, primaryIdentity, diffText || undefined, coreText, ctxText || undefined, representativeSpec),
+    leadingModifierVariant
+      ? buildCandidate(origin, primaryIdentity, leadingModifierVariant, diffText || undefined, ctxText || undefined, representativeSpec)
+      : undefined,
     buildCandidate(origin, primaryIdentity, coreText, diffText || undefined, ctxText || undefined, representativeSpec),
     buildCandidate(origin, primaryIdentity, coreText, diffText || undefined, representativeSpec),
     buildCandidate(primaryIdentity, diffText || undefined, coreText, representativeSpec),
@@ -146,10 +179,6 @@ export function generateCandidates(input: TitleInput, options: GenerateCandidate
   const uniqueCandidates = Array.from(
     new Set(rawCandidates.filter((candidate): candidate is string => Boolean(candidate)))
   );
-
-  if (uniqueCandidates.length >= 3) {
-    return uniqueCandidates.slice(0, 3);
-  }
 
   const fallback = buildCandidate(origin, primaryIdentity, secondaryIdentity, coreText, diffText || undefined, ctxText || undefined, representativeSpec);
   if (fallback && !uniqueCandidates.includes(fallback)) {

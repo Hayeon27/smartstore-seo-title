@@ -1,0 +1,15 @@
+{
+  "productType": "발매트",
+  "origin": "",
+  "brand": "",
+  "manufacturer": "",
+  "modelName": "",
+  "currentTitle": "극세사 발매트 욕실 주방 미끄럼방지 세탁가능 2개입",
+  "coreTerms": ["발매트"],
+  "differentiators": ["미끄럼방지", "세탁가능", "극세사"],
+  "contextTerms": ["욕실용", "주방용"],
+  "representativeSpec": "2개입",
+  "targetCustomer": "",
+  "forbiddenPhrases": ["행사", "특가", "최저가"],
+  "variantValues": ["1개", "2개", "3개"]
+}

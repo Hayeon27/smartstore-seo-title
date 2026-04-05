@@ -1,0 +1,15 @@
+{
+  "productType": "도시락통",
+  "origin": "국산",
+  "brand": "",
+  "manufacturer": "",
+  "modelName": "",
+  "currentTitle": "스텐 도시락통 전자레인지 밀폐 도시락통 2종 세트 640ml 850ml",
+  "coreTerms": ["도시락통", "스텐"],
+  "differentiators": ["밀폐", "전자레인지", "반찬칸"],
+  "contextTerms": ["직장인용", "데일리"],
+  "representativeSpec": "640ml",
+  "targetCustomer": "",
+  "forbiddenPhrases": ["무료배송", "특가", "인기"],
+  "variantValues": ["640ml", "850ml", "2종세트"]
+}

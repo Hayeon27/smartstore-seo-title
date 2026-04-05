@@ -1,0 +1,15 @@
+{
+  "productType": "냄비",
+  "origin": "",
+  "brand": "해피콜",
+  "manufacturer": "",
+  "modelName": "",
+  "currentTitle": "해피콜 IH 스텐 냄비 깊은형 뚜껑포함 24cm",
+  "coreTerms": ["냄비", "IH", "스텐"],
+  "differentiators": ["깊은형", "뚜껑포함"],
+  "contextTerms": ["주방용"],
+  "representativeSpec": "24cm",
+  "targetCustomer": "",
+  "forbiddenPhrases": ["무료배송", "특가", "인기"],
+  "variantValues": ["20cm", "24cm", "28cm"]
+}

@@ -116,12 +116,18 @@ npm run dev
 
 Current default sample:
 
+- `cli/samples/bedding-with-current.json`
+- `cli/samples/cutting-board-with-current.json`
+- `cli/samples/dress-with-current.json`
+- `cli/samples/frying-pan-with-current.json`
+- `cli/samples/luggage-with-current.json`
+- `cli/samples/phone-strap-with-current.json`
+- `cli/samples/shower-head-with-current.json`
+- `cli/samples/sneakers-with-current.json`
 - `cli/samples/socks.json`
 - `cli/samples/socks-with-current.json`
+- `cli/samples/storage-box-with-current.json`
 - `cli/samples/tumbler-with-current.json`
-- `cli/samples/luggage-with-current.json`
-- `cli/samples/dress-with-current.json`
-- `cli/samples/phone-strap-with-current.json`
 
 The long-term plan is to replace manual sample input with normalized data derived from Smartstore channel-product reads.
 

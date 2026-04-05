@@ -95,11 +95,14 @@ export function generateCandidates(input: TitleInput): string[] {
   const ctxText = contextTerms.join(" ");
 
   const rawCandidates = [
-    buildCandidate(origin, primaryIdentity, coreText, diffText || undefined, ctxText || undefined, secondaryIdentity, representativeSpec),
-    buildCandidate(origin, primaryIdentity, coreText, diffText || undefined, secondaryIdentity, ctxText || undefined, representativeSpec),
-    buildCandidate(primaryIdentity, coreText, diffText || undefined, secondaryIdentity, ctxText || undefined, representativeSpec),
-    buildCandidate(origin, coreText, diffText || undefined, primaryIdentity, secondaryIdentity, ctxText || undefined, representativeSpec),
-    buildCandidate(coreText, diffText || undefined, primaryIdentity, secondaryIdentity, ctxText || undefined, representativeSpec)
+    buildCandidate(origin, primaryIdentity, secondaryIdentity, coreText, diffText || undefined, representativeSpec),
+    buildCandidate(origin, primaryIdentity, secondaryIdentity, coreText, diffText || undefined, ctxText || undefined, representativeSpec),
+    buildCandidate(origin, primaryIdentity, coreText, secondaryIdentity, diffText || undefined, ctxText || undefined, representativeSpec),
+    buildCandidate(origin, primaryIdentity, coreText, diffText || undefined, ctxText || undefined, representativeSpec),
+    buildCandidate(primaryIdentity, coreText, diffText || undefined, representativeSpec),
+    buildCandidate(primaryIdentity, diffText || undefined, coreText, representativeSpec),
+    buildCandidate(coreText, diffText || undefined, primaryIdentity, representativeSpec),
+    buildCandidate(origin, coreText, diffText || undefined, primaryIdentity, ctxText || undefined, representativeSpec)
   ];
 
   const uniqueCandidates = Array.from(new Set(rawCandidates.filter(Boolean)));

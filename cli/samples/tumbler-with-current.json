@@ -1,0 +1,15 @@
+{
+  "productType": "tumbler",
+  "origin": "",
+  "brand": "락앤락",
+  "manufacturer": "",
+  "modelName": "",
+  "currentTitle": "락앤락 데일리 핸들 텀블러 보온 보냉 600ml",
+  "coreTerms": ["텀블러", "핸들", "보온", "보냉"],
+  "differentiators": [],
+  "contextTerms": ["데일리"],
+  "representativeSpec": "600ml",
+  "targetCustomer": "",
+  "forbiddenPhrases": ["무료배송", "특가", "행사"],
+  "variantValues": ["450ml", "600ml", "900ml"]
+}

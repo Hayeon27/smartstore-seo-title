@@ -117,6 +117,10 @@ Current default sample:
 
 - `cli/samples/socks.json`
 - `cli/samples/socks-with-current.json`
+- `cli/samples/tumbler-with-current.json`
+- `cli/samples/luggage-with-current.json`
+- `cli/samples/dress-with-current.json`
+- `cli/samples/phone-strap-with-current.json`
 
 The long-term plan is to replace manual sample input with normalized data derived from Smartstore channel-product reads.
 

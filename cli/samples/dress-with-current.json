@@ -1,0 +1,15 @@
+{
+  "productType": "dress",
+  "origin": "",
+  "brand": "",
+  "manufacturer": "",
+  "modelName": "",
+  "currentTitle": "블랙 프릴 퍼프 반팔 롱원피스 하객룩 출근룩 데이트룩",
+  "coreTerms": ["블랙", "퍼프", "롱원피스"],
+  "differentiators": [],
+  "contextTerms": ["하객룩", "데일리"],
+  "representativeSpec": "",
+  "targetCustomer": "여성",
+  "forbiddenPhrases": ["특가", "인기", "최저가"],
+  "variantValues": ["하객룩", "출근룩", "데이트룩"]
+}

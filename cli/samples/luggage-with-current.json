@@ -1,0 +1,15 @@
+{
+  "productType": "luggage",
+  "origin": "",
+  "brand": "",
+  "manufacturer": "",
+  "modelName": "",
+  "currentTitle": "기내용 여행 캐리어 20인치 24인치 28인치 확장형 하드 대용량",
+  "coreTerms": ["기내용", "여행", "캐리어"],
+  "differentiators": ["확장형", "하드케이스"],
+  "contextTerms": [],
+  "representativeSpec": "20인치",
+  "targetCustomer": "",
+  "forbiddenPhrases": ["무료배송", "특가", "인기"],
+  "variantValues": ["20인치", "24인치", "28인치"]
+}

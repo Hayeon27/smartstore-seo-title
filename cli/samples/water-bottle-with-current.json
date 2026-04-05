@@ -1,0 +1,15 @@
+{
+  "productType": "물병",
+  "origin": "",
+  "brand": "락앤락",
+  "manufacturer": "",
+  "modelName": "",
+  "currentTitle": "락앤락 스테인리스 보온물병 손잡이형 500ml",
+  "coreTerms": ["물병", "보온", "스테인리스"],
+  "differentiators": ["손잡이형"],
+  "contextTerms": ["데일리"],
+  "representativeSpec": "500ml",
+  "targetCustomer": "",
+  "forbiddenPhrases": ["무료배송", "특가", "행사"],
+  "variantValues": ["350ml", "500ml", "750ml"]
+}

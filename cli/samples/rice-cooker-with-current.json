@@ -1,0 +1,15 @@
+{
+  "productType": "전기밥솥",
+  "origin": "",
+  "brand": "쿠쿠",
+  "manufacturer": "",
+  "modelName": "CRP-LHTR1010FD",
+  "currentTitle": "쿠쿠 IH 압력밥솥 트윈프레셔 10인용 CRP-LHTR1010FD",
+  "coreTerms": ["밥솥", "압력", "IH"],
+  "differentiators": ["트윈프레셔"],
+  "contextTerms": ["주방용"],
+  "representativeSpec": "10인용",
+  "targetCustomer": "",
+  "forbiddenPhrases": ["무료배송", "특가", "행사"],
+  "variantValues": ["6인용", "10인용"]
+}

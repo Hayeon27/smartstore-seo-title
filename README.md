@@ -27,59 +27,24 @@ The current design goal is:
 
 ## Current Formula
 
-```math
-\mathrm{TitleScore}
+$$
+\Large \mathrm{TitleScore}
 = 4C + 3D + 1X + 2B + 1.5Q - 2R - 1.5L - 3P - 4T - 1.5S - 2V
-```
+$$
 
 Variable meanings:
 
-- `C`: core relevance
-- `D`: differentiator strength
-- `X`: context quality
-- `B`: brand or model identity signal
-- `Q`: representative quantity, size, capacity, or set composition
-- `R`: redundancy penalty
-- `L`: length penalty
-- `P`: policy or promotion penalty
-- `T`: target consistency penalty
-- `S`: style naturalness penalty
-- `V`: variant overload penalty
-
-### Variable Examples
-
-- `C` core relevance
-  Typical terms: product identity terms such as `양말`, `단목`, `텀블러`, `캐리어`, `롱원피스`, `도마`
-
-- `D` differentiator strength
-  Typical terms: true feature or product distinction terms such as `무압박`, `미끄럼방지`, `확장형`, `하드케이스`, `도난방지`, `항균`, `보온`, `보냉`
-
-- `X` context quality
-  Typical terms: usage or style context such as `데일리`, `캐주얼`, `하객룩`, `여행용`, `출근룩`
-
-- `B` brand or model identity signal
-  Typical terms: `락앤락`, `뉴발란스`, `MR530KA`, line names, model codes, manufacturer names when they act as title-level identifiers
-
-- `Q` representative quantity, size, capacity, or set composition
-  Typical terms: `10켤레`, `600ml`, `20인치`, `28cm`, `Free`, `3종`
-
-- `R` redundancy penalty
-  Typical patterns: repeated or overlapping title words such as `휴대폰 핸드폰 스마트폰`, `남자 남성`, `단목 중목 장목`
-
-- `L` length penalty
-  Typical pattern: titles that become too long because too many attributes, variants, or contexts are packed into one line
-
-- `P` policy or promotion penalty
-  Typical terms: `무료배송`, `특가`, `최저가`, `인기`, `강추`, `핫딜`, `사은품`, `쿠폰`, `이벤트`
-
-- `T` target consistency penalty
-  Typical conflict patterns: mixing contradictory target groups such as `남성` with `여성`, or adult-targeted and child-targeted terms in one title
-
-- `S` style naturalness penalty
-  Typical patterns: awkward marketplace phrasing, excessive symbols, broken spacing, repeated separators, or visually noisy punctuation
-
-- `V` variant overload penalty
-  Typical patterns: listing too many options or variant values in one title such as `20인치 24인치 28인치`, `남자 여자 학생`, `Free L XL`
+- `C`: core relevance (product identity terms and category-defining terms)
+- `D`: differentiator strength (feature, material, structure, or distinguishing product signals)
+- `X`: context quality (usage, style, or scenario terms)
+- `B`: brand or model identity signal (brand, line, manufacturer, or model-code identifiers)
+- `Q`: representative quantity, size, capacity, or set composition (one primary spec or count signal)
+- `R`: redundancy penalty (repeated, overlapping, or near-synonymous title terms)
+- `L`: length penalty (overly long titles with too many packed attributes)
+- `P`: policy or promotion penalty (promotional copy, marketplace noise, or forbidden phrases)
+- `T`: target consistency penalty (conflicting audience, gender, age, or user-group signals)
+- `S`: style naturalness penalty (awkward phrasing, noisy punctuation, or broken formatting)
+- `V`: variant overload penalty (too many option values, sizes, or variant groups in one title)
 
 ## Core Ideas
 

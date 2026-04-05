@@ -1,0 +1,15 @@
+{
+  "productType": "가습기",
+  "origin": "",
+  "brand": "샤오미",
+  "manufacturer": "",
+  "modelName": "MJJSQ06DY",
+  "currentTitle": "샤오미 스마트 가습기 4L 저소음 MJJSQ06DY",
+  "coreTerms": ["가습기", "스마트", "저소음"],
+  "differentiators": ["초음파"],
+  "contextTerms": ["침실용"],
+  "representativeSpec": "4L",
+  "targetCustomer": "",
+  "forbiddenPhrases": ["무료배송", "특가", "행사"],
+  "variantValues": ["2L", "4L", "6L"]
+}

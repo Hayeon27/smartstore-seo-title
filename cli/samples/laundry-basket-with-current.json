@@ -1,0 +1,15 @@
+{
+  "productType": "빨래바구니",
+  "origin": "",
+  "brand": "홈러브",
+  "manufacturer": "",
+  "modelName": "",
+  "currentTitle": "홈러브 접이식 빨래바구니 대용량 세탁물함 60L",
+  "coreTerms": ["빨래바구니", "세탁물함", "접이식"],
+  "differentiators": ["대용량"],
+  "contextTerms": ["세탁실용"],
+  "representativeSpec": "60L",
+  "targetCustomer": "",
+  "forbiddenPhrases": ["무료배송", "특가", "행사"],
+  "variantValues": ["30L", "45L", "60L"]
+}

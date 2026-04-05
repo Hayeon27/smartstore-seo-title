@@ -12,6 +12,8 @@ This repository contains a reusable skill and evaluation docs for generating Kor
 
 It is designed as a category-agnostic title engine, not a category-specific title generator.
 
+The repository now also includes a minimal TypeScript CLI prototype for local candidate generation and scoring.
+
 ## What This Project Does
 
 The engine takes product facts, generates a small set of title candidates, scores them with a shared heuristic, and recommends the best title.
@@ -68,6 +70,11 @@ smartstore-seo-title/
   SKILL.md
   agents/
     openai.yaml
+  cli/
+    package.json
+    tsconfig.json
+    src/
+    samples/
   references/
     score-tuning-summary.md
     title-evaluation-template.md
@@ -80,12 +87,37 @@ smartstore-seo-title/
   Main skill definition for title generation, scoring, and recommendation
 - `agents/openai.yaml`
   UI-facing metadata for the skill
+- `cli/`
+  Minimal TypeScript CLI prototype for local generation and scoring
 - `references/title-evaluation-template.md`
   Blank evaluation template for comparing generated and market titles
 - `references/title-evaluation-samples.md`
   Filled sample comparisons across multiple categories
 - `references/score-tuning-summary.md`
   Tuning rationale and current weight decisions
+
+## CLI Prototype
+
+The CLI is intentionally small and currently focuses on:
+
+- reading a normalized title input JSON file
+- generating a few candidate titles
+- scoring each candidate with the shared formula
+- printing the best recommendation
+
+Example:
+
+```bash
+cd cli
+npm install
+npm run dev
+```
+
+Current default sample:
+
+- `cli/samples/socks.json`
+
+The long-term plan is to replace manual sample input with normalized data derived from Smartstore channel-product reads.
 
 ## Validation Approach
 

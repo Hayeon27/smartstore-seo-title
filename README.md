@@ -46,6 +46,27 @@ Variable meanings:
 - `S`: style naturalness penalty (awkward phrasing, noisy punctuation, or broken formatting)
 - `V`: variant overload penalty (too many option values, sizes, or variant groups in one title)
 
+## Tie-Break Formula
+
+When two titles have the same `TitleScore`, the CLI falls back to a secondary ordering heuristic:
+
+$$
+\Large \mathbf{TieBreakScore}
+= 3\mathbf{O} + 2\mathbf{I} + 2\mathbf{K} + 1.5\mathbf{F} + 1\mathbf{Q}
+- 1\mathbf{X_e} - 1\mathbf{N} - 1\mathbf{L_t}
+$$
+
+Tie-break meanings:
+
+- `O`: preferred overall field ordering quality
+- `I`: identity placement quality
+- `K`: core product-term placement quality
+- `F`: differentiator placement quality
+- `Q`: representative spec placement quality
+- `X_e`: extra context usage penalty
+- `N`: punctuation or noise penalty
+- `L_t`: title compactness penalty
+
 ## Core Ideas
 
 The engine should reward:

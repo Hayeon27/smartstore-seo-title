@@ -84,6 +84,14 @@ $$
 
 When two candidate titles have the same `TitleScore`, the CLI applies a secondary comparator.
 
+For documentation purposes, the secondary comparator can be summarized as:
+
+$$
+\Large \mathbf{TieBreakScore}
+= 3\mathbf{O} + 2\mathbf{I} + 2\mathbf{K} + 1.5\mathbf{F} + 1\mathbf{Q}
+- 1\mathbf{X_e} - 1\mathbf{N} - 1\mathbf{L_t}
+$$
+
 This follows a practical tie-aware ranking view:
 
 - do not resolve tied candidates arbitrarily
@@ -96,3 +104,14 @@ The current secondary comparator prefers:
 - fewer unnecessary context terms
 - shorter and cleaner titles
 - more stable lexical ordering as a final fallback
+
+Where:
+
+- `O`: preferred overall field ordering quality
+- `I`: identity placement quality
+- `K`: core-term placement quality
+- `F`: differentiator placement quality
+- `Q`: spec placement quality
+- `X_e`: extra context usage penalty
+- `N`: punctuation or noise penalty
+- `L_t`: title compactness penalty

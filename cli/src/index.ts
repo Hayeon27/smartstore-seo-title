@@ -54,6 +54,12 @@ async function main() {
     title,
     breakdown: scoreTitle(title, input)
   }));
+  const currentCandidate = input.currentTitle
+    ? {
+        title: input.currentTitle,
+        breakdown: scoreTitle(input.currentTitle, input)
+      }
+    : undefined;
 
   const recommended = [...candidates].sort((a, b) => b.breakdown.total - a.breakdown.total)[0];
 
@@ -64,14 +70,15 @@ async function main() {
         title: recommended.title,
         reason: buildReason(recommended),
         breakdown: recommended.breakdown
-      }
+      },
+      current: currentCandidate
     };
 
     console.log(JSON.stringify(output, null, 2));
     return;
   }
 
-  console.log(formatCandidates(candidates));
+  console.log(formatCandidates(candidates, currentCandidate));
 }
 
 void main();

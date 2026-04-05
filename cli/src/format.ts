@@ -50,12 +50,35 @@ function buildReason(candidate: TitleCandidate): string {
   return reasons.slice(0, 3).join(", ");
 }
 
-export function formatCandidates(candidates: TitleCandidate[]): string {
+function formatDelta(delta: number): string {
+  const sign = delta > 0 ? "+" : "";
+  return `${sign}${formatValue(delta)}`;
+}
+
+function formatCurrentComparison(recommended: TitleCandidate, current?: TitleCandidate): string[] {
+  if (!current) {
+    return [];
+  }
+
+  const delta = recommended.breakdown.total - current.breakdown.total;
+  const verdict =
+    delta > 0 ? `yes (${formatDelta(delta)})` : delta < 0 ? `no (${formatDelta(delta)})` : "tie (0)";
+
+  return [
+    "",
+    "Current title:",
+    current.title,
+    `Current score: ${formatValue(current.breakdown.total)}`,
+    `Recommended beats current: ${verdict}`
+  ];
+}
+
+export function formatCandidates(candidates: TitleCandidate[], current?: TitleCandidate): string {
   const lines: string[] = [];
 
   candidates.forEach((candidate, index) => {
     lines.push(`Candidate ${index + 1}: ${candidate.title}`);
-    lines.push(`Score: ${candidate.breakdown.total}`);
+    lines.push(`Score: ${formatValue(candidate.breakdown.total)}`);
     lines.push(`Breakdown: ${formatBreakdown(candidate)}`);
     lines.push("");
   });
@@ -64,6 +87,7 @@ export function formatCandidates(candidates: TitleCandidate[]): string {
   lines.push("Recommended:");
   lines.push(recommended.title);
   lines.push(`Reason: ${buildReason(recommended)}`);
+  lines.push(...formatCurrentComparison(recommended, current));
 
   return lines.join("\n");
 }

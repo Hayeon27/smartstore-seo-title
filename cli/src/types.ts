@@ -4,6 +4,7 @@ export type TitleInput = {
   brand?: string;
   manufacturer?: string;
   modelName?: string;
+  currentTitle?: string;
   coreTerms: string[];
   differentiators: string[];
   contextTerms: string[];

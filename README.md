@@ -27,8 +27,9 @@ The current design goal is:
 
 ## Current Formula
 
-```text
-TitleScore = 4C + 3D + 1X + 2B + 1.5Q - 2R - 1.5L - 3P - 4T - 1.5S - 2V
+```math
+\mathrm{TitleScore}
+= 4C + 3D + 1X + 2B + 1.5Q - 2R - 1.5L - 3P - 4T - 1.5S - 2V
 ```
 
 Variable meanings:

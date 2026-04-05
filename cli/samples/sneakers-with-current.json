@@ -1,0 +1,15 @@
+{
+  "productType": "운동화",
+  "origin": "",
+  "brand": "뉴발란스",
+  "manufacturer": "",
+  "modelName": "MR530KA",
+  "currentTitle": "뉴발란스 530 스틸그레이 운동화 MR530KA",
+  "coreTerms": ["운동화", "뉴발란스", "530"],
+  "differentiators": ["스틸그레이"],
+  "contextTerms": ["데일리"],
+  "representativeSpec": "",
+  "targetCustomer": "",
+  "forbiddenPhrases": ["무료배송", "특가", "인기"],
+  "variantValues": ["230", "240", "250", "260", "270"]
+}

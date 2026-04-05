@@ -1,0 +1,15 @@
+{
+  "productType": "shower head",
+  "origin": "",
+  "brand": "",
+  "manufacturer": "",
+  "modelName": "",
+  "currentTitle": "필터 샤워기 헤드 고수압 절수 욕실용 1개",
+  "coreTerms": ["샤워기", "헤드"],
+  "differentiators": ["필터", "고수압", "절수"],
+  "contextTerms": ["욕실용"],
+  "representativeSpec": "1개",
+  "targetCustomer": "",
+  "forbiddenPhrases": ["무료배송", "특가", "행사"],
+  "variantValues": ["1개", "2개", "3개"]
+}

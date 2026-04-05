@@ -1,0 +1,15 @@
+{
+  "productType": "프라이팬",
+  "origin": "",
+  "brand": "테팔",
+  "manufacturer": "",
+  "modelName": "",
+  "currentTitle": "테팔 IH 인덕션 코팅 프라이팬 28cm",
+  "coreTerms": ["프라이팬", "IH"],
+  "differentiators": ["인덕션", "코팅"],
+  "contextTerms": ["데일리"],
+  "representativeSpec": "28cm",
+  "targetCustomer": "",
+  "forbiddenPhrases": ["무료배송", "특가", "인기"],
+  "variantValues": ["24cm", "26cm", "28cm"]
+}

@@ -1,0 +1,15 @@
+{
+  "productType": "cutting board",
+  "origin": "국산",
+  "brand": "",
+  "manufacturer": "",
+  "modelName": "",
+  "currentTitle": "국산 TPU 양면 도마 칼집안나는 이유식용 대형 41cm",
+  "coreTerms": ["도마", "양면"],
+  "differentiators": ["TPU", "칼집안나는", "항균"],
+  "contextTerms": ["이유식용", "주방용"],
+  "representativeSpec": "41cm",
+  "targetCustomer": "",
+  "forbiddenPhrases": ["인기", "강추", "최저가"],
+  "variantValues": ["35cm", "41cm", "45cm"]
+}

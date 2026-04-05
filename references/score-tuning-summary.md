@@ -79,3 +79,20 @@ $$
   because titles should stay compact, but normal commerce titles are often slightly long
 - `S = 1.5`
   because awkward style matters, but should not overpower product relevance
+
+## Tie-Breaker Policy
+
+When two candidate titles have the same `TitleScore`, the CLI applies a secondary comparator.
+
+This follows a practical tie-aware ranking view:
+
+- do not resolve tied candidates arbitrarily
+- prefer candidates with a stronger product-identifying order
+- prefer listwise relevance signals over extra context words
+
+The current secondary comparator prefers:
+
+- stronger `origin -> identity -> core -> differentiator -> spec` ordering
+- fewer unnecessary context terms
+- shorter and cleaner titles
+- more stable lexical ordering as a final fallback

@@ -256,6 +256,7 @@ The current workflow is:
 ## Tie-Breaker Rationale
 
 When two generated titles receive the same `TitleScore`, the CLI applies a deterministic tie-breaker instead of relying on array order.
+The same fallback is also used when a recommended title and the current channel title end with the same score, so the comparison output can still pick a preferred structure.
 
 The tie-breaker is guided by two ideas from the ranking literature:
 

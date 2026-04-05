@@ -55,14 +55,33 @@ function formatDelta(delta: number): string {
   return `${sign}${formatValue(delta)}`;
 }
 
-function formatCurrentComparison(recommended: TitleCandidate, current?: TitleCandidate): string[] {
+type CurrentComparisonDisplay = {
+  comparison: BatchComparison;
+  delta?: number;
+  tieBreakResolved?: boolean;
+};
+
+function formatCurrentComparison(
+  recommended: TitleCandidate,
+  current?: TitleCandidate,
+  comparison?: CurrentComparisonDisplay
+): string[] {
   if (!current) {
     return [];
   }
 
-  const delta = recommended.breakdown.total - current.breakdown.total;
+  const delta = comparison?.delta ?? recommended.breakdown.total - current.breakdown.total;
+  const resolvedByTieBreak = comparison?.tieBreakResolved ?? false;
   const verdict =
-    delta > 0 ? `yes (${formatDelta(delta)})` : delta < 0 ? `no (${formatDelta(delta)})` : "tie (0)";
+    comparison?.comparison === "better"
+      ? resolvedByTieBreak
+        ? "yes (tie-break)"
+        : `yes (${formatDelta(delta)})`
+      : comparison?.comparison === "worse"
+        ? resolvedByTieBreak
+          ? "no (tie-break)"
+          : `no (${formatDelta(delta)})`
+        : "tie (0)";
 
   return [
     "",
@@ -73,7 +92,12 @@ function formatCurrentComparison(recommended: TitleCandidate, current?: TitleCan
   ];
 }
 
-export function formatCandidates(candidates: TitleCandidate[], current?: TitleCandidate): string {
+export function formatCandidates(
+  candidates: TitleCandidate[],
+  recommended: TitleCandidate,
+  current?: TitleCandidate,
+  comparison?: CurrentComparisonDisplay
+): string {
   const lines: string[] = [];
 
   candidates.forEach((candidate, index) => {
@@ -83,11 +107,10 @@ export function formatCandidates(candidates: TitleCandidate[], current?: TitleCa
     lines.push("");
   });
 
-  const recommended = [...candidates].sort((a, b) => b.breakdown.total - a.breakdown.total)[0];
   lines.push("Recommended:");
   lines.push(recommended.title);
   lines.push(`Reason: ${buildReason(recommended)}`);
-  lines.push(...formatCurrentComparison(recommended, current));
+  lines.push(...formatCurrentComparison(recommended, current, comparison));
 
   return lines.join("\n");
 }
@@ -101,6 +124,7 @@ export type BatchResult = {
   current?: TitleCandidate;
   comparison: BatchComparison;
   delta?: number;
+  tieBreakResolved?: boolean;
 };
 
 export type BatchAnalysisSummary = {
@@ -118,16 +142,16 @@ function escapeMarkdownCell(value: string): string {
 
 function formatMarkdownComparisonLabel(result: BatchResult): string {
   if (result.comparison === "no-current") return "n/a";
-  if (result.comparison === "better") return `better (${formatDelta(result.delta ?? 0)})`;
+  if (result.comparison === "better") return result.tieBreakResolved ? "better (tie-break)" : `better (${formatDelta(result.delta ?? 0)})`;
   if (result.comparison === "tie") return "tie (0)";
-  return `worse (${formatDelta(result.delta ?? 0)})`;
+  return result.tieBreakResolved ? "worse (tie-break)" : `worse (${formatDelta(result.delta ?? 0)})`;
 }
 
 function formatComparisonLabel(result: BatchResult): string {
   if (result.comparison === "no-current") return "no current title";
-  if (result.comparison === "better") return `better than current (${formatDelta(result.delta ?? 0)})`;
+  if (result.comparison === "better") return result.tieBreakResolved ? "better than current (tie-break)" : `better than current (${formatDelta(result.delta ?? 0)})`;
   if (result.comparison === "tie") return "tied with current (0)";
-  return `below current (${formatDelta(result.delta ?? 0)})`;
+  return result.tieBreakResolved ? "below current (tie-break)" : `below current (${formatDelta(result.delta ?? 0)})`;
 }
 
 export function formatBatchResults(results: BatchResult[]): string {
@@ -142,7 +166,15 @@ export function formatBatchResults(results: BatchResult[]): string {
     if (result.current) {
       const delta = result.recommended.breakdown.total - result.current.breakdown.total;
       const verdict =
-        delta > 0 ? `beats current (${formatValue(delta)})` : delta < 0 ? `below current (${formatValue(delta)})` : "ties current (0)";
+        result.comparison === "better"
+          ? result.tieBreakResolved
+            ? "beats current (tie-break)"
+            : `beats current (${formatValue(delta)})`
+          : result.comparison === "worse"
+            ? result.tieBreakResolved
+              ? "below current (tie-break)"
+              : `below current (${formatValue(delta)})`
+            : "ties current (0)";
 
       lines.push(`Current score: ${formatValue(result.current.breakdown.total)}`);
       lines.push(`Comparison: ${verdict}`);

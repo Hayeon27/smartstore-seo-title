@@ -23,8 +23,8 @@ The engine should penalize:
 ## Current Formula
 
 $$
-\Large \mathrm{TitleScore}
-= 4C + 3.5D + 0.5X + 2B + 1.5Q - 2.5R - 1.5L - 3P - 4T - 1.5S - 2V
+\Large \mathbf{TitleScore}
+= 4\mathbf{C} + 3.5\mathbf{D} + 0.5\mathbf{X} + 2\mathbf{B} + 1.5\mathbf{Q} - 2.5\mathbf{R} - 1.5\mathbf{L} - 3\mathbf{P} - 4\mathbf{T} - 1.5\mathbf{S} - 2\mathbf{V}
 $$
 
 ## Variable Meanings

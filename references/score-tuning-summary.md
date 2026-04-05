@@ -87,9 +87,7 @@ When two candidate titles have the same `TitleScore`, the CLI applies a secondar
 For documentation purposes, the secondary comparator can be summarized as:
 
 $$
-\Large \mathbf{TieBreakScore}
-= 3\mathbf{O} + 2\mathbf{I} + 2\mathbf{K} + 1.5\mathbf{F} + 1\mathbf{Q}
-- 1\mathbf{X_e} - 1\mathbf{N} - 1\mathbf{L_t}
+\Large \mathbf{TieBreakScore} = 3\mathbf{O} + 2\mathbf{I} + 2\mathbf{K} + 1.5\mathbf{F} + 1\mathbf{Q} - 1\mathbf{X_e} - 1\mathbf{N} - 1\mathbf{L_t}
 $$
 
 This follows a practical tie-aware ranking view:

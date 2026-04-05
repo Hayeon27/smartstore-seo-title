@@ -1,0 +1,15 @@
+{
+  "productType": "베개",
+  "origin": "국산",
+  "brand": "슬라운드",
+  "manufacturer": "",
+  "modelName": "",
+  "currentTitle": "국산 슬라운드 호텔베개 경추형 50x70 2개세트",
+  "coreTerms": ["베개", "호텔베개"],
+  "differentiators": ["경추형", "복원력"],
+  "contextTerms": ["침실용", "숙면"],
+  "representativeSpec": "50x70",
+  "targetCustomer": "",
+  "forbiddenPhrases": ["무료배송", "특가", "인기"],
+  "variantValues": ["50x70", "40x60", "2개세트"]
+}

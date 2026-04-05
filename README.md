@@ -110,11 +110,14 @@ npm run dev
 
 Current default sample:
 
+- `cli/samples/air-fryer-paper-liner-with-current.json`
 - `cli/samples/bedding-with-current.json`
 - `cli/samples/cutting-board-with-current.json`
+- `cli/samples/desk-lamp-with-current.json`
 - `cli/samples/dress-with-current.json`
 - `cli/samples/frying-pan-with-current.json`
 - `cli/samples/luggage-with-current.json`
+- `cli/samples/pillow-with-current.json`
 - `cli/samples/phone-strap-with-current.json`
 - `cli/samples/shower-head-with-current.json`
 - `cli/samples/sneakers-with-current.json`

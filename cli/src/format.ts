@@ -21,6 +21,35 @@ function formatBreakdown(candidate: TitleCandidate): string {
   ].join(" ");
 }
 
+function buildReason(candidate: TitleCandidate): string {
+  const b = candidate.breakdown;
+  const reasons: string[] = [];
+
+  if (b.C >= 0.75) reasons.push("strong core relevance");
+  if (b.D >= 0.75) reasons.push("clear differentiator");
+  if (b.B >= 0.75) reasons.push("strong brand/model signal");
+  if (b.Q >= 0.75) reasons.push("clean spec placement");
+  if (b.X >= 0.75) reasons.push("good context coverage");
+
+  const lowNoise =
+    b.R <= 0.5 &&
+    b.L <= 0.5 &&
+    b.P <= 0.5 &&
+    b.T <= 0.5 &&
+    b.S <= 0.5 &&
+    b.V <= 0.5;
+
+  if (lowNoise) {
+    reasons.push("low noise");
+  }
+
+  if (reasons.length === 0) {
+    return "best overall score after penalties";
+  }
+
+  return reasons.slice(0, 3).join(", ");
+}
+
 export function formatCandidates(candidates: TitleCandidate[]): string {
   const lines: string[] = [];
 
@@ -34,6 +63,7 @@ export function formatCandidates(candidates: TitleCandidate[]): string {
   const recommended = [...candidates].sort((a, b) => b.breakdown.total - a.breakdown.total)[0];
   lines.push("Recommended:");
   lines.push(recommended.title);
+  lines.push(`Reason: ${buildReason(recommended)}`);
 
   return lines.join("\n");
 }

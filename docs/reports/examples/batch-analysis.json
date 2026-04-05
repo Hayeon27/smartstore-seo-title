@@ -1,0 +1,174 @@
+{
+  "analysis": {
+    "summary": {
+      "total": 29,
+      "compared": 29,
+      "better": 25,
+      "tie": 4,
+      "worse": 0,
+      "flagged": 4
+    },
+    "flagged": [
+      {
+        "sample": "bedding-pad-with-current.json",
+        "recommended": {
+          "title": "슬라운드 침대패드 누빔 사계절 먼지없는 Q",
+          "breakdown": {
+            "C": 1,
+            "D": 1,
+            "X": 0,
+            "B": 0.85,
+            "Q": 1,
+            "R": 0,
+            "L": 0,
+            "P": 0,
+            "T": 0,
+            "S": 0,
+            "V": 0,
+            "total": 10.7
+          }
+        },
+        "reason": "strong core relevance, clear differentiator, strong brand/model signal",
+        "current": {
+          "title": "슬라운드 먼지없는 침대패드 사계절 누빔 Q",
+          "breakdown": {
+            "C": 1,
+            "D": 1,
+            "X": 0,
+            "B": 0.85,
+            "Q": 1,
+            "R": 0,
+            "L": 0,
+            "P": 0,
+            "T": 0,
+            "S": 0,
+            "V": 0,
+            "total": 10.7
+          }
+        },
+        "comparison": "tie",
+        "delta": 0
+      },
+      {
+        "sample": "frying-pan-with-current.json",
+        "recommended": {
+          "title": "테팔 프라이팬 IH 인덕션 코팅 28cm",
+          "breakdown": {
+            "C": 1,
+            "D": 1,
+            "X": 0,
+            "B": 0.85,
+            "Q": 1,
+            "R": 0,
+            "L": 0,
+            "P": 0,
+            "T": 0,
+            "S": 0,
+            "V": 0,
+            "total": 10.7
+          }
+        },
+        "reason": "strong core relevance, clear differentiator, strong brand/model signal",
+        "current": {
+          "title": "테팔 IH 인덕션 코팅 프라이팬 28cm",
+          "breakdown": {
+            "C": 1,
+            "D": 1,
+            "X": 0,
+            "B": 0.85,
+            "Q": 1,
+            "R": 0,
+            "L": 0,
+            "P": 0,
+            "T": 0,
+            "S": 0,
+            "V": 0,
+            "total": 10.7
+          }
+        },
+        "comparison": "tie",
+        "delta": 0
+      },
+      {
+        "sample": "monitor-arm-with-current.json",
+        "recommended": {
+          "title": "카멜마운트 모니터암 듀얼 가스스프링 높이조절 27인치",
+          "breakdown": {
+            "C": 1,
+            "D": 1,
+            "X": 0,
+            "B": 0.85,
+            "Q": 1,
+            "R": 0,
+            "L": 0.5,
+            "P": 0,
+            "T": 0,
+            "S": 0,
+            "V": 0,
+            "total": 9.95
+          }
+        },
+        "reason": "strong core relevance, clear differentiator, strong brand/model signal",
+        "current": {
+          "title": "카멜마운트 듀얼 모니터암 가스스프링 높이조절 27인치",
+          "breakdown": {
+            "C": 1,
+            "D": 1,
+            "X": 0,
+            "B": 0.85,
+            "Q": 1,
+            "R": 0,
+            "L": 0.5,
+            "P": 0,
+            "T": 0,
+            "S": 0,
+            "V": 0,
+            "total": 9.95
+          }
+        },
+        "comparison": "tie",
+        "delta": 0
+      },
+      {
+        "sample": "shower-head-with-current.json",
+        "recommended": {
+          "title": "샤워기 헤드 필터 고수압 절수 욕실용 1개",
+          "breakdown": {
+            "C": 1,
+            "D": 1,
+            "X": 1,
+            "B": 0,
+            "Q": 1,
+            "R": 0,
+            "L": 0,
+            "P": 0,
+            "T": 0,
+            "S": 0,
+            "V": 0,
+            "total": 9.5
+          }
+        },
+        "reason": "strong core relevance, clear differentiator, clean spec placement",
+        "current": {
+          "title": "필터 샤워기 헤드 고수압 절수 욕실용 1개",
+          "breakdown": {
+            "C": 1,
+            "D": 1,
+            "X": 1,
+            "B": 0,
+            "Q": 1,
+            "R": 0,
+            "L": 0,
+            "P": 0,
+            "T": 0,
+            "S": 0,
+            "V": 0,
+            "total": 9.5
+          }
+        },
+        "comparison": "tie",
+        "delta": 0
+      }
+    ]
+  }
+}
